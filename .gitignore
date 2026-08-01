@@ -1,0 +1,26 @@
+# Backend
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+backend/maven-settings.xml
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Storage
+storage/audio/*
+storage/waveforms/*
+!storage/audio/.gitkeep
+!storage/waveforms/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Logs
+*.log

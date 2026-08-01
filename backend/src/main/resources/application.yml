@@ -1,0 +1,67 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: podcast-collab
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:podcast_db}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:podcastroot}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:default-dev-secret-key-please-change-in-production-environment-0123456789}
+    access-token-expiration-ms: 7200000
+    refresh-token-expiration-ms: 604800000
+  storage:
+    location: ${STORAGE_LOCATION:./storage}
+    audio-subdir: audio
+    waveform-subdir: waveforms
+  audio:
+    allowed-extensions: wav,mp3,m4a
+    max-size-mb: 500
+    ffmpeg-path: ${FFMPEG_PATH:ffmpeg}
+    ffprobe-path: ${FFPROBE_PATH:ffprobe}
+    waveform-samples: 2000
+  rate-limit:
+    general: 100
+    login: 5
+    upload: 10
+  invite:
+    expiration-hours: 24
+  share:
+    expiration-days: 7
+  reset-password:
+    expiration-minutes: 30
+  version:
+    max-keep: 10
+
+logging:
+  level:
+    com.podcast.collab: INFO
+    org.springframework.security: WARN
