@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: podcast-collab-backend
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/podcast_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:podcastroot}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  jackson:
+    time-zone: UTC
+
+server:
+  port: 8080
+
+app:
+  jwt-secret: ${JWT_SECRET:change-me-in-production-please-32bytes-minimum-secret-key}
+  access-token-ttl-minutes: 120
+  refresh-token-ttl-days: 7
+  upload-dir: ${UPLOAD_DIR:./data/uploads}
+  max-audio-size-bytes: 524288000
+  audio-signed-url-ttl-minutes: 60
+  invite-ttl-hours: 24
+  password-reset-ttl-minutes: 30
+  share-link-ttl-days: 7
+  public-base-url: ${PUBLIC_BASE_URL:http://localhost:8080}
+  rss-enclosure-ttl-minutes: 10080
+  # 可信代理 IP（逗号分隔），仅这些对端传来的 X-Forwarded-For 才被采信；默认不信任
+  trusted-proxies: ${TRUSTED_PROXIES:}
+  # mock 发件通道 outbox 文件（开发环境）
+  mock-mail-file: ${MOCK_MAIL_FILE:./data/mock-mail.log}
+  whisper:
+    enabled: ${WHISPER_ENABLED:false}
+    api-url: ${WHISPER_API_URL:https://api.openai.com/v1/audio/transcriptions}
+    api-key: ${WHISPER_API_KEY:}
+  rate-limit:
+    general-per-minute: 100
+    login-per-minute: 5
+    register-per-minute: 5
+    upload-per-minute: 10
