@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: podcastroot
+      MYSQL_DATABASE: podcast_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  backend:
+    build: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/podcast_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: podcastroot
+      JWT_SECRET: ${JWT_SECRET}
+      UPLOAD_DIR: /data/uploads
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost}
+      # 可信代理（前端 nginx 容器网段），配置后才采信 X-Forwarded-For
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}
+      WHISPER_ENABLED: ${WHISPER_ENABLED:-false}
+      WHISPER_API_KEY: ${WHISPER_API_KEY:-}
+    volumes:
+      - backend_data:/data
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+volumes:
+  mysql_data:
+  backend_data:
