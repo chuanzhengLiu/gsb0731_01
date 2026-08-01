@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Local build settings for offline/CI-independent builds.
+  The machine's global ~/.m2/settings.xml pins all `central` traffic to a
+  private Nexus mirror (nexus.ybveg.com) that is not reachable here, so we
+  override it to talk to Maven Central directly.
+  Usage: mvn -s .mvn/settings.xml ...
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
+  <mirrors>
+    <mirror>
+      <id>central-direct</id>
+      <mirrorOf>*</mirrorOf>
+      <name>Maven Central Direct</name>
+      <url>https://repo1.maven.org/maven2/</url>
+    </mirror>
+  </mirrors>
+</settings>
